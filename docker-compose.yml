@@ -1,0 +1,10 @@
+version: '3'
+services:
+  srb2kart:
+    build: .
+    ports:
+        - "5029:5029/udp"
+    volumes:
+      - "./config:/config"
+      - "./addons:/addons"
+      - "./data:/data"
