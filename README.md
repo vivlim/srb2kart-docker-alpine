@@ -1,49 +1,29 @@
-# srb2kart
+# srb2kart-docker-alpine
 
-Docker container for running a Sonic Robo Blast 2 Kart dedicated server.
+Docker container for running a Sonic Robo Blast 2 Kart dedicated server, from source on Alpine Linux.
+
+This container builds [my patched sources](https://github.com/vivlim/Kart-Public) which make a couple tweaks to random level selection (namely, hell maps are disabled as well as kodachrome void).
 
 ## Usage
 
 ### Basic
 
-At a minumum, UDP port 5029 must be exposed.
+`docker-compose up -d`
 
-`docker run -d --name srb2kart -p 5029:5029/udp brianallred/srb2kart`
-
-You may choose a different host port, just note that players joining your server must specify the port number if it deviates from the default.
+UDP port 5029 will be exposed.
 
 ### Advanced
 
 #### Configuration
 
-In order to configure server variables, bind the `/config` volume to a host directory, create `kartserv.cfg`, and edit it. Documentation [here](https://wiki.srb2.org/wiki/Console/Variables).
+Create `config/kartserv.cfg` and add your configuration in the form of console commands there.
 
-`docker run -d --name srb2kart -p 5029:5029/udp -v /path/on/host/config:/config brianallred/srb2kart`
+Documentation [here](https://wiki.srb2.org/wiki/Console/Variables).
 
-`$ sudo vim /path/on/host/config/kartserv.cfg`
+To add extra command line arguments, for now the easiest way is to modify `srb2kart.sh` and put them in the script.
 
 #### Addons
 
-In order to load addons, bind the `/addons` volume to a host directory and copy them there.
+In order to load addons which have the .pk3 or .kart extensions, put them in the `/addons` directory and they will be copied into the assets folder during startup.
 
-`docker run -d --name srb2kart -p 5029:5029/udp -v /path/on/host/addons:/addons brianallred/srb2kart`
-
-Note that if you're unable to join the server after adding an addon, make sure the addon was loaded correctly (`docker logs srb2kart` is a great place to start).
-
-#### Persistent Data
-
-In order to persist data through server shutdowns, bind the '/data' volume to a host directory.
-
-`docker run -d --name srb2kart -p 5029:5029/udp -v /path/on/host/data:/data brianallred/srb2kart`
-
-#### Getting listed on the Master Server list
-
-Pass `-room <id>` as a parameter after the image name, where `<id>` is either 33 for Standard or 28 for Casual.
-
-`docker run -d --name srb2kart -p 5029:5029/udp brianallred/srb2kart -room 33`
-
-#### Literally any other command line parameter
-
-Pass the parameter after the image name.
-
-`docker run -d --name srb2kart -p 5029:5029/udp brianallred/srb2kart -password 1234`
+For addons which have more involved setup, this is currently an unsolved problem :)
