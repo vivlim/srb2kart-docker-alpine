@@ -3,7 +3,8 @@
 EXTRA_FILES="$(ls /addons/*.kart) $(ls /addons/*.pk3) $(ls /addons/*.wad)"
 INITIAL_MAP=map11
 
-mkdir -p /assets
+echo "Rebuilding asset directory."
+rm -rf /assets/*
 
 echo "Copying base assets to /wads"
 cp -rv /Kart-Public/assets/installer/* /assets
