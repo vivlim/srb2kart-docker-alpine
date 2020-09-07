@@ -1,13 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 
-cd /usr/games/SRB2Kart || exit
+EXTRA_FILES="$(ls /addons/*.kart) $(ls /addons/*.pk3)"
+INITIAL_MAP=map11
 
-ADDONS=$(ls /addons)
+mkdir -p /assets
 
-if [ -z "$ADDONS" ]; then
-    /usr/games/SRB2Kart/srb2kart -dedicated -config kartserv.cfg -home /data -file bonuschars.kart$*
-    exit
-fi
+echo "Copying base assets to /wads"
+cp -rv /Kart-Public/assets/installer/* /assets
 
-# Intentional word splitting
-/usr/games/SRB2Kart/srb2kart -dedicated -config kartserv.cfg -home /data $* -file $ADDONS -file bonuschars.kart
+echo "Copying addons over base assets"
+cp -rv /addons/* /assets
+
+echo "Launching with extra assets: bonuschars.kart $EXTRA_FILES"
+
+SRB2WADDIR=/assets /Kart-Public/_build/bin/srb2kart -dedicated -config /config/kartserv.cfg -home /data -file bonuschars.kart $EXTRA_FILES +map $INITIAL_MAP

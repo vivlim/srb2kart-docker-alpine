@@ -1,0 +1,4 @@
+addons/*
+!addons/.placeholder
+config/*
+!config/.placeholder
