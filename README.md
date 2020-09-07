@@ -24,6 +24,6 @@ To add extra command line arguments, for now the easiest way is to modify `srb2k
 
 #### Addons
 
-In order to load addons which have the .pk3 or .kart extensions, put them in the `/addons` directory and they will be copied into the assets folder during startup.
+In order to load addons which have the .pk3, .wad, or .kart extensions, put them in the `/addons` directory and they will be copied into the assets folder during startup.
 
 For addons which have more involved setup, this is currently an unsolved problem :)

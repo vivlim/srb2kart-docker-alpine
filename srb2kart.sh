@@ -1,6 +1,6 @@
 #!/bin/sh
 
-EXTRA_FILES="$(ls /addons/*.kart) $(ls /addons/*.pk3)"
+EXTRA_FILES="$(ls /addons/*.kart) $(ls /addons/*.pk3) $(ls /addons/*.wad)"
 INITIAL_MAP=map11
 
 mkdir -p /assets
