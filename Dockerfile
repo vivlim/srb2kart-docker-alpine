@@ -8,7 +8,7 @@ VOLUME /addons
 VOLUME /data
 
 # clone (my patched) sources
-RUN git clone https://github.com/vivlim/Kart-Public.git
+RUN git clone https://github.com/vivlim/Kart-Public.git -b v1.3-patched
 
 WORKDIR /Kart-Public
 
