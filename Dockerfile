@@ -24,7 +24,7 @@ RUN chmod a+x /srb2kart.sh
 RUN chown srb2:srb2 -R /Kart-Public && chown srb2:srb2 -R /data && chown srb2:srb2 -R /assets
 USER srb2
 
-RUN wget -qO- http://ppa.launchpad.net/kartkrew/srb2kart/ubuntu/pool/main/s/srb2kart-data/srb2kart-data_1.2-20200512035013.tar.xz | tar xJ
+RUN wget -qO- http://ppa.launchpad.net/kartkrew/srb2kart/ubuntu/pool/main/s/srb2kart-data/srb2kart-data_1.2-20200914024642.tar.xz | tar xJ
 RUN sed -i 's%midi_disabled = digital_disabled = true;%digital_disabled = true;%' src/sdl/sdl_sound.c
 RUN cmake -B_build -DSRB2_CONFIG_HWRENDER=OFF -DSRB2_CONFIG_SDL2_USEMIXER=OFF -DSRB2_CONFIG_STATIC_OPENGL=OFF -DSRB2_CONFIG_USEASM=OFF -DSRB2_CONFIG_YASM=OFF -DSRB2_CONFIG_HAVE_GME=OFF -DSRB2_CONFIG_HAVE_PNG=OFF
 RUN make -j`nproc` -C_build
