@@ -1,7 +1,7 @@
 #!/bin/sh
 
 EXTRA_FILES="$(ls /addons/*.kart) $(ls /addons/*.pk3) $(ls /addons/*.wad)"
-INITIAL_MAP=map11
+INITIAL_MAP=$(echo map11 map05 map47 | xargs shuf -n1 -e)
 
 echo "Rebuilding asset directory."
 rm -rf /assets/*

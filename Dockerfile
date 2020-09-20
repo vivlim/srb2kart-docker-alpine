@@ -1,14 +1,21 @@
 FROM alpine:3.12
 
+# git repo and branch to use for building the srb2kart server.
+ENV KART_GIT_REPO https://github.com/vivlim/Kart-Public.git
+ENV KART_GIT_BRANCH v1.3-patched
+
+# windows installer to extract assets from.
+ENV KART_WINDOWS_INSTALLER https://github.com/STJr/Kart-Public/releases/download/v1.3/srb2kart-v13-Installer.exe
+
 # Install required software and srb2kart
-RUN apk add --no-cache build-base make cmake wget git gcc tar zlib zlib-dev curl curl-dev sdl2-dev
+RUN apk add --no-cache build-base make cmake wget git gcc libarchive-tools zlib zlib-dev curl curl-dev sdl2-dev
 
 # Setup volumes
 VOLUME /addons
 VOLUME /data
 
 # clone (my patched) sources
-RUN git clone https://github.com/vivlim/Kart-Public.git -b v1.3-patched
+RUN git clone ${KART_GIT_REPO} -b ${KART_GIT_BRANCH}
 
 WORKDIR /Kart-Public
 
@@ -24,7 +31,9 @@ RUN chmod a+x /srb2kart.sh
 RUN chown srb2:srb2 -R /Kart-Public && chown srb2:srb2 -R /data && chown srb2:srb2 -R /assets
 USER srb2
 
-RUN wget -qO- http://ppa.launchpad.net/kartkrew/srb2kart/ubuntu/pool/main/s/srb2kart-data/srb2kart-data_1.2-20200914024642.tar.xz | tar xJ
+# get assets by downloading and extracting the windows installer, and deleting exes/dlls that aren't needed
+RUN mkdir -p assets/installer && cd assets/installer && wget -qO Installer.exe ${KART_WINDOWS_INSTALLER} && bsdtar xfv Installer.exe && rm *.exe && rm *.dll && cd ../..
+
 RUN sed -i 's%midi_disabled = digital_disabled = true;%digital_disabled = true;%' src/sdl/sdl_sound.c
 RUN cmake -B_build -DSRB2_CONFIG_HWRENDER=OFF -DSRB2_CONFIG_SDL2_USEMIXER=OFF -DSRB2_CONFIG_STATIC_OPENGL=OFF -DSRB2_CONFIG_USEASM=OFF -DSRB2_CONFIG_YASM=OFF -DSRB2_CONFIG_HAVE_GME=OFF -DSRB2_CONFIG_HAVE_PNG=OFF
 RUN make -j`nproc` -C_build
